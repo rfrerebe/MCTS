@@ -32,7 +32,9 @@ namespace MCTS
             this.visits = 0L;
 
             this.childs = new ConcurrentBag<Node>();
-            this.untriedMoves = new ConcurrentStack<IMove>(gameState.GetMoves().Shuffle()); //randomize Moves
+            var moveList = gameState.GetMoves();
+            var shuffleList = moveList.Shuffle();
+            this.untriedMoves = new ConcurrentStack<IMove>(shuffleList); //randomize Moves
             //this.playerJustMoved = gameState.JustMoved();
         }
 
@@ -127,7 +129,8 @@ namespace MCTS
         
         internal string Display()
         {
-            return string.Format("[M: {0} W/V:{1}/{2} U:{3} C:{4}]",this.move, this.Wins, this.Visits, this.untriedMoves.Count, this.childs.Count);
+            var move = this.move != null ? this.move.Name : "No Move";
+            return string.Format("[M: {0} W/V:{1}/{2} U:{3} C:{4}]", move , this.Wins, this.Visits, this.untriedMoves.Count, this.childs.Count);
         }
 
 

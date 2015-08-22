@@ -2,10 +2,11 @@
 namespace MCTS
 {
     using Interfaces;
+    using System;
 
     public static class UCT
     {
-        public static IMove ComputeUCT (IGameState gameState, int itermax, bool verbose)
+        public static IMove ComputeUCT (IGameState gameState, int itermax, bool verbose, Action<string> printfn)
         {
             var rootNode = new Node(null, null, gameState);
             var player = gameState.CurrentPlayer();
@@ -43,7 +44,7 @@ namespace MCTS
             }
             if (verbose)
             {
-                rootNode.TreeToString(0);
+                printfn(rootNode.TreeToString(0));
             }
 
             return rootNode.MostVisitedMove();
