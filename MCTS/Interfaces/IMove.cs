@@ -2,5 +2,8 @@
 {
     public interface IMove
     {
+        string Name { get; }
+
+        IGameState DoMove();
     }
 }

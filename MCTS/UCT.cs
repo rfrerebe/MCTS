@@ -8,17 +8,18 @@ namespace MCTS
         public static IMove ComputeUCT (IGameState gameState, int itermax, bool verbose)
         {
             var rootNode = new Node(null, null, gameState);
+            var player = gameState.CurrentPlayer();
 
             for (var i = 0; i < itermax; i++)
             {
                 var node = rootNode;
-                var state = gameState.Clone();
+                var state = gameState;
 
                 // Select
                 while (node.NodeIsFullyExpandedAndNonterminal)
                 {
                     node = node.UCTSelectChild();
-                    state.DoMove(node.Move);
+                    state = node.Move.DoMove();
                 }
 
                 // Expand
@@ -26,17 +27,17 @@ namespace MCTS
                 if (result.Item1)
                 {
                     var move = result.Item2;
-                    state.DoMove(move);
+                    state = move.DoMove();
                     node = node.AddChild(move, state);
                 }
 
                 // Rollout
-                state.PlayRandomlyUntilTheEnd();
+                var status = state.PlayRandomlyUntilTheEnd(player);
 
                 // Backpropagate
                 while (node != null)
                 {
-                    node.Update(state.IsGameWon(node.PlayerJustMoved));
+                    node.Update(status);
                     node = node.ParentNode;
                 }
             }

@@ -21,7 +21,7 @@ namespace MCTS
         private long visits;
         private ConcurrentBag<Node> childs;
         private ConcurrentStack<IMove> untriedMoves;
-        private IPlayer playerJustMoved;
+        //private IPlayer playerJustMoved;
 
         internal Node(Node parent, IMove move, IGameState gameState)
         {
@@ -33,16 +33,16 @@ namespace MCTS
 
             this.childs = new ConcurrentBag<Node>();
             this.untriedMoves = new ConcurrentStack<IMove>(gameState.GetMoves().Shuffle()); //randomize Moves
-            this.playerJustMoved = gameState.JustMoved();
+            //this.playerJustMoved = gameState.JustMoved();
         }
 
-        internal IPlayer PlayerJustMoved
-        {
-            get
-            {
-                return this.playerJustMoved;
-            }
-        }
+        //internal IPlayer PlayerJustMoved
+        //{
+        //    get
+        //    {
+        //        return this.playerJustMoved;
+        //    }
+        //}
 
         internal long Wins
         {
