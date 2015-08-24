@@ -1,56 +1,58 @@
 ﻿
 namespace MCTS
-{   
+{
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading;
     using System.Text;
-        
+
     using Enum;
     using Interfaces;
     using Utils;
+    using System.Collections.Generic;
 
     internal class Node
     {
-        private float UCTK = 0.3F;
+        private float UCTK;
 
         private IMove move;
         private Node parent;
-        private long wins;
-        private long visits;
-        private ConcurrentBag<Node> childs;
-        private ConcurrentStack<IMove> untriedMoves;
-        //private IPlayer playerJustMoved;
+        private int wins;
+        private int visits;
+        private List<Node> childs;
+        private Stack<IMove> untriedMoves;
+        //private int movesCount;
 
-        internal Node(Node parent, IMove move, IGameState gameState)
+        internal Node(Node parent, IMove move, IGameState gameState, float uctk)
         {
             this.move = move; // null for root Node
             this.parent = parent; // null for root Node
+            this.UCTK = uctk;
+            this.wins = 0;
+            this.visits = 0;
 
-            this.wins = 0L;
-            this.visits = 0L;
+            this.childs = new List<Node>();
+            var moves = gameState.GetMoves();
+            var shuffled = moves.Shuffle();
 
-            this.childs = new ConcurrentBag<Node>();
-            var moveList = gameState.GetMoves();
-            var shuffleList = moveList.Shuffle();
-            this.untriedMoves = new ConcurrentStack<IMove>(shuffleList); //randomize Moves
-            //this.playerJustMoved = gameState.JustMoved();
+            this.untriedMoves = new Stack<IMove>(shuffled); //randomize Moves
+            //this.movesCount = this.untriedMoves.Count;
         }
 
-        //internal IPlayer PlayerJustMoved
+        //internal int MovesCount
         //{
         //    get
         //    {
-        //        return this.playerJustMoved;
+        //        return this.movesCount;
         //    }
         //}
 
-        internal long Wins
+        internal int Wins
         {
             get
             {
-                return Interlocked.Read(ref this.wins);
+                return this.wins;
             }
         }
 
@@ -58,7 +60,7 @@ namespace MCTS
         {
             get
             {
-                return Interlocked.Read(ref this.visits);
+                return this.visits;
             }
         }
 
@@ -66,7 +68,7 @@ namespace MCTS
         {
             get
             {
-                return (this.untriedMoves.IsEmpty && ! this.childs.IsEmpty);
+                return (this.untriedMoves.Count == 0 &&  this.childs.Count != 0);
             }
         }       
 
@@ -85,11 +87,62 @@ namespace MCTS
                 return this.parent;
             }
         }
+         
+        internal string DisplayMostVisistedChild()
+        {
+            var values = this.childs.Select(node => new Tuple<long, long, long, string>(1000 * node.Wins/node.Visits, node.Wins, node.Visits, DisplayNode(node))).OrderByDescending(t => t.Item1);
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("MVC :");
+            foreach (var value in values)
+            {
+                sb.AppendFormat(" {0}={1}/{2} {3}", value.Item1, value.Item2, value.Item3, value.Item4);
+            }
+            return sb.ToString();
+        }
 
         internal IMove MostVisitedMove()
         {
-            return this.childs.OrderByDescending(node => node.Visits).First().Move;
+            return this.childs.OrderByDescending(node => 1000 * node.Wins / node.Visits).First().Move;
         }
+
+        internal string DisplayUTC()
+        {
+            var values = this.childs.Select(node => new Tuple<double, string>(ComputeUTC(node),DisplayNode(node))).OrderByDescending(t => t.Item1);
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("UTC : ");
+            foreach (var value in values)
+            {
+                sb.AppendFormat("{0:0.00} {1},", value.Item1, value.Item2);
+            }
+            return sb.ToString();
+        }
+
+        private double ComputeUTC(Node node)
+        {
+            return (node.Wins / node.Visits) + (UCTK * Math.Sqrt(Math.Log10(this.Visits) / node.Visits));
+        }
+
+        private string DisplayNode(Node node)
+        {
+            var list = new List<string>();
+            var sb = new StringBuilder();
+            while (node.Move != null)
+            {
+                list.Add(node.Move.Name);
+                node = node.ParentNode;
+            }
+
+            list.Reverse();
+            foreach (var move in list)
+            {
+                sb.AppendFormat("->{0}", move);
+            }
+            return sb.ToString();
+        }
+
+
            
 
         /// Use the UCB1 formula to select a child node. Often a constant UCTK is applied so we have
@@ -98,32 +151,33 @@ namespace MCTS
         internal Node UCTSelectChild()
         {
             // bigger is first
-            return this.childs.OrderByDescending(node => node.Wins / node.Visits + UCTK * Math.Sqrt(2.0 * Math.Log(this.Visits)) / node.Visits).First();
+            var list  = this.childs.OrderByDescending(ComputeUTC);
+            return list.First();
         }
 
         internal Tuple<bool,IMove> GetRandomMoveOrIsFalse()
         {
-            IMove move;
-            if (this.untriedMoves.TryPop(out move))
+            if (this.untriedMoves.Count != 0)
             {
+                var move = this.untriedMoves.Pop();
                 return new Tuple<bool,IMove>(true, move);
             }
             return new Tuple<bool, IMove>(false, null); ;
         }
 
-        internal Node AddChild(IMove move, IGameState gameState)
+        internal Node AddChild (IMove move, IGameState gameState)
         {
-            var node = new Node(this, move, gameState);
+            var node = new Node(this, move, gameState, this.UCTK);
             this.childs.Add(node);
             return node;
         }
 
         internal void Update(EGameFinalStatus status)
         {
-            Interlocked.Increment(ref this.visits);
+            this.visits++;
             if(status == EGameFinalStatus.GameWon)
             {
-                Interlocked.Increment(ref this.wins);
+                this.wins++;
             }
         }
         
