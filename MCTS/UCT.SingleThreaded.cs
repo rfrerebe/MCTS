@@ -3,14 +3,12 @@ namespace MCTS
 {
     using Interfaces;
     using System;
-    using System.Threading.Tasks;
-    using System.Linq;
 
-    public static class UCT
+    public static partial class UCT
     {
-        public static IMove ComputeUCT (IGameState gameState, int itermax, bool verbose, Action<string> printfn, float uctk)
+        public static IMove ComputeSingleThreadedUCT(IGameState gameState, int itermax, bool verbose, Action<string> printfn, float uctk)
         {
-            var rootNode = new Node(null, null, gameState, uctk);
+            var rootNode = new SingleThreadedNode(null, null, gameState, uctk);
             var player = gameState.CurrentPlayer();
 
             //var taskCount = Math.Min(itermax, rootNode.MovesCount);
@@ -27,10 +25,10 @@ namespace MCTS
                 // Select
                 while (node.NodeIsFullyExpandedAndNonterminal)
                 {
-                    //if (verbose)
-                    //{
-                    //    printfn(node.DisplayUTC());
-                    //}
+                    if (verbose)
+                    {
+                        printfn(node.DisplayUTC());
+                    }
                     node = node.UCTSelectChild();
                     state = node.Move.DoMove();
                 }
@@ -57,29 +55,10 @@ namespace MCTS
             if (verbose)
             {
                 printfn(rootNode.TreeToString(0));
+                printfn(rootNode.DisplayMostVisistedChild());
             }
 
-            printfn(rootNode.DisplayMostVisistedChild());
             return rootNode.MostVisitedMove();
         }
-        
-        //private static void ComputeFirstNodes(Node node, IPlayer player)
-        //{
-        //    // Select Expand
-        //    var result = node.GetRandomMoveOrIsFalse();
-        //    if (result.Item1 == false)
-        //    {
-        //        return;
-        //    }
-        //    var move = result.Item2;
-        //    var state = result.Item2.DoMove();
-        //    node = node.AddChild(move, state);
-        //    // Rollout
-        //    var status = state.PlayRandomlyUntilTheEnd(player);
-        //    // Backpropagate
-        //    node.Update(status);
-        //    node = node.ParentNode;
-        //    node.Update(status);
-        //}
     }
 }

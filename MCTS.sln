@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTS", "MCTS\MCTS.csproj", "{9AACF0AA-E46F-49D2-B195-2DCD73F6C4CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTSTest", "MCTS.Test\MCTSTest.csproj", "{9B7C1013-2540-4D2E-9D02-BAF4DF48174E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTSMock", "MCTSMock\MCTSMock.csproj", "{77BF631B-4C20-4B06-986F-57D4B411831A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{9AACF0AA-E46F-49D2-B195-2DCD73F6C4CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AACF0AA-E46F-49D2-B195-2DCD73F6C4CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AACF0AA-E46F-49D2-B195-2DCD73F6C4CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B7C1013-2540-4D2E-9D02-BAF4DF48174E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7C1013-2540-4D2E-9D02-BAF4DF48174E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7C1013-2540-4D2E-9D02-BAF4DF48174E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7C1013-2540-4D2E-9D02-BAF4DF48174E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BF631B-4C20-4B06-986F-57D4B411831A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BF631B-4C20-4B06-986F-57D4B411831A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BF631B-4C20-4B06-986F-57D4B411831A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BF631B-4C20-4B06-986F-57D4B411831A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
