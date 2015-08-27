@@ -12,12 +12,12 @@ namespace MCTSMock
     {
         IPlayer IGameState.CurrentPlayer()
         {
-            throw new NotImplementedException();
+            return new MockPlayer();
         }
 
         IEnumerable<IMove> IGameState.GetMoves()
         {
-            throw new NotImplementedException();
+ 
         }
 
         EGameFinalStatus IGameState.PlayRandomlyUntilTheEnd(IPlayer player)
