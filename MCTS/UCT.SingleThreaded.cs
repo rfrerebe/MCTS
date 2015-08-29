@@ -1,8 +1,10 @@
 ﻿
 namespace MCTS
 {
-    using Interfaces;
     using System;
+
+    using Interfaces;
+    using Node;
 
     public static partial class UCT
     {
@@ -19,16 +21,16 @@ namespace MCTS
 
             for (var i = 0; i < itermax; i++)
             {
-                var node = rootNode;
+                INode node = rootNode;
                 var state = gameState;
 
                 // Select
                 while (node.NodeIsFullyExpandedAndNonterminal)
                 {
-                    if (verbose)
-                    {
-                        printfn(node.DisplayUTC());
-                    }
+                    //if (verbose)
+                    //{
+                    //    printfn(node.DisplayUTC());
+                    //}
                     node = node.UCTSelectChild();
                     state = node.Move.DoMove();
                 }
@@ -39,7 +41,7 @@ namespace MCTS
                 {
                     var move = result.Item2;
                     state = move.DoMove();
-                    node = node.AddChild(move, state);
+                    node = node.AddChild(move, state) as SingleThreadedNode;
                 }
 
                 // Rollout
@@ -49,12 +51,12 @@ namespace MCTS
                 while (node != null)
                 {
                     node.Update(status);
-                    node = node.ParentNode;
+                    node = node.Parent;
                 }
             }
             if (verbose)
             {
-                printfn(rootNode.TreeToString(0));
+                printfn(rootNode.DisplayTree(0));
                 //printfn(rootNode.DisplayMostVisistedChild());
             }
 
