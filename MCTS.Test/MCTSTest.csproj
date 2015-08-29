@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MCTSMock\MCTSMock.csproj">
+      <Project>{77bf631b-4c20-4b06-986f-57d4b411831a}</Project>
+      <Name>MCTSMock</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MCTS\MCTS.csproj">
       <Project>{9aacf0aa-e46f-49d2-b195-2dcd73f6c4cf}</Project>
       <Name>MCTS</Name>

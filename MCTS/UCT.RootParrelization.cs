@@ -6,9 +6,9 @@ namespace MCTS
 
     public static partial class UCT
     {
-        public static IMove ComputeSingleThreadedUCT(IGameState gameState, int itermax, bool verbose, Action<string> printfn, float uctk)
+        public static IMove ComputeRootParallization(IGameState gameState, int itermax, bool verbose, Action<string> printfn, float uctk)
         {
-            var rootNode = new SingleThreadedNode(null, null, gameState, uctk);
+            var rootNode = new MultiThreadedNode(null, null, gameState, uctk);
             var player = gameState.CurrentPlayer();
 
             //var taskCount = Math.Min(itermax, rootNode.MovesCount);
