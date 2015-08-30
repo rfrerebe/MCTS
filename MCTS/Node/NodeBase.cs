@@ -93,7 +93,7 @@ namespace MCTS.Node
         //    throw new NotImplementedException();
         //}
 
-        public abstract INode AddChild(IMove move, IGameState gameState);
+        public abstract INode AddChild(Func<float, INode> nodeConstructor);
 
         public abstract Tuple<bool, IMove> GetRandomMoveOrIsFalse();
 

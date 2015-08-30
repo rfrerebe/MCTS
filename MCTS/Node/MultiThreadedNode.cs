@@ -13,11 +13,9 @@ namespace MCTS.Node
 
     internal class MultiThreadedNode : NodeBase
     {
-
-
         private long wins;
         private long visits;
-        private ConcurrentBag<MultiThreadedNode> childs;
+        private ConcurrentBag<INode> childs;
         private ConcurrentStack<IMove> untriedMoves;
 
         internal MultiThreadedNode(INode parent, IMove move, IGameState gameState, float uctk)
@@ -26,7 +24,7 @@ namespace MCTS.Node
             this.wins =  0L;
             this.visits = 0L;
 
-            this.childs = new ConcurrentBag<MultiThreadedNode>();
+            this.childs = new ConcurrentBag<INode>();
             var moves = gameState.GetMoves();
             var shuffled = moves.Shuffle();
 
@@ -81,9 +79,9 @@ namespace MCTS.Node
             return new Tuple<bool, IMove>(result, move);
         }
 
-        public override INode AddChild(IMove move, IGameState gameState)
+        public override INode AddChild(Func<float, INode> nodeConstructor)
         {
-            var node = new MultiThreadedNode(this, move, gameState, this.UCTK);
+            var node = nodeConstructor(this.UCTK);
             this.childs.Add(node);
             return node;
         }

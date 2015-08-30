@@ -13,7 +13,7 @@ namespace MCTS.Node
 
     internal class SingleThreadedNode : NodeBase
     {
-        private readonly List<SingleThreadedNode> childs;
+        private readonly List<INode> childs;
         private readonly Stack<IMove> untriedMoves;
 
         private long wins;
@@ -24,7 +24,7 @@ namespace MCTS.Node
         {
             this.wins = 0L;
             this.visits = 0L;
-            this.childs = new List<SingleThreadedNode>();
+            this.childs = new List<INode>();
             var moves = gameState.GetMoves();
             var shuffled = moves.Shuffle();
             this.untriedMoves = new Stack<IMove>(shuffled); //randomize Moves
@@ -80,9 +80,9 @@ namespace MCTS.Node
             return new Tuple<bool, IMove>(false, null); ;
         }
 
-        public override INode AddChild (IMove move, IGameState gameState)
+        public override INode AddChild (Func<float, INode> nodeConstructor)
         {
-            var node = new SingleThreadedNode(this, move, gameState, this.UCTK);
+            var node = nodeConstructor(this.UCTK);
             this.childs.Add(node);
             return node;
         }

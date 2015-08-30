@@ -5,6 +5,8 @@ namespace MCTS
 
     using Interfaces;
     using Node;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public static partial class UCT
     {
@@ -13,12 +15,15 @@ namespace MCTS
             var rootNode = new MultiThreadedNode(null, null, gameState, uctk);
             var player = gameState.CurrentPlayer();
 
-            //var taskCount = Math.Min(itermax, rootNode.MovesCount);
-            //var tasks = (Enumerable.Range(0, taskCount).Select (i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player)))).ToArray();
-            //Task.WaitAll(tasks);
 
-            //var remainingTasks = itermax - rootNode.MovesCount;
+            var tasks = (Enumerable.Range(0, 4).Select(i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player, itermax, gameState)))).ToArray();
+            Task.WaitAll(tasks);
+            return rootNode.MostVisitedMove();
 
+        }
+
+        private static void ComputeFirstNodes(INode rootNode, IPlayer player, int itermax, IGameState gameState)
+        {
             for (var i = 0; i < itermax; i++)
             {
                 INode node = rootNode;
@@ -41,7 +46,8 @@ namespace MCTS
                 {
                     var move = result.Item2;
                     state = move.DoMove();
-                    node = node.AddChild(move, state);
+                    Func<float, INode> constructor = (f) => new SingleThreadedNode(node, move, state, f);
+                    node = node.AddChild(constructor);
                 }
 
                 // Rollout
@@ -54,13 +60,13 @@ namespace MCTS
                     node = node.Parent;
                 }
             }
-            if (verbose)
-            {
-                printfn(rootNode.DisplayTree(0));
-                //printfn(rootNode.DisplayMostVisistedChild());
-            }
+            //if (verbose)
+            //{
+            //    //printfn(rootNode.DisplayTree(0));
+            //    //printfn(rootNode.DisplayMostVisistedChild());
+            //}
 
-            return rootNode.MostVisitedMove();
+
         }
     }
 }

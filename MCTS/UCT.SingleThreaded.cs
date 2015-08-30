@@ -41,7 +41,8 @@ namespace MCTS
                 {
                     var move = result.Item2;
                     state = move.DoMove();
-                    node = node.AddChild(move, state) as SingleThreadedNode;
+                    Func<float, INode> constructor = (f) => new SingleThreadedNode(node, move, state, f);
+                    node = node.AddChild(constructor);
                 }
 
                 // Rollout

@@ -23,7 +23,7 @@
 
         bool NodeIsFullyExpandedAndNonterminal { get; }
 
-        INode AddChild(IMove move, IGameState gameState);
+        INode AddChild(Func<float, INode> nodeConstructor);
 
         Tuple<bool, IMove> GetRandomMoveOrIsFalse();
 
