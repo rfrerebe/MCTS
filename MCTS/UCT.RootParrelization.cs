@@ -15,10 +15,13 @@ namespace MCTS
         {
             var rootNode = new MultiThreadedNode(null, null, gameState, uctk);
             var player = gameState.CurrentPlayer();
+            var processors = Environment.ProcessorCount;
 
+            var tasks1 = (Enumerable.Range(0, processors).Select(i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player, itermax, gameState)))).ToArray();
+            Task.WaitAll(tasks1);
 
-            var tasks = (Enumerable.Range(0, 2).Select(i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player, itermax, gameState)))).ToArray();
-            Task.WaitAll(tasks);
+            var tasks2 = (Enumerable.Range(0, processors).Select(i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player, itermax, gameState)))).ToArray();
+            Task.WaitAll(tasks2);
             return rootNode.MostVisitedMove();
 
         }
@@ -37,7 +40,7 @@ namespace MCTS
             }
         }
 
-        private static void Expand(INode node, IGameState state)
+        private static bool Expand(INode node, IGameState state)
         {
             // Expand
             var result = node.GetRandomMoveOrIsFalse();
@@ -47,7 +50,9 @@ namespace MCTS
                 state = move.DoMove();
                 Func<float, INode> constructor = (f) => new SingleThreadedNode(node, move, state, f);
                 node = node.AddChild(constructor);
+                return true;
             }
+            return false;
         }
 
         private static EGameFinalStatus Rollout( IGameState state, IPlayer player)
@@ -68,15 +73,14 @@ namespace MCTS
         private static void ComputeFirstNodes(INode rootNode, IPlayer player, int itermax, IGameState gameState)
         {
  
-                INode node = rootNode;
-                var state = gameState;
+            INode node = rootNode;
+            var state = gameState;
 
-                Expand(node, state);
-
+            if (Expand(node, state))
+            {
                 var status = Rollout(state, player);
-
                 Backpropagate(node, status);
-
+            }
         }
 
         private static void Compute(INode rootNode, IPlayer player, int itermax, IGameState gameState)
@@ -88,11 +92,11 @@ namespace MCTS
 
                 Select(node, state);
 
-                Expand(node, state);
-
-                var status = Rollout(state, player);
-
-                Backpropagate(node, status);
+                if (Expand(node, state))
+                {
+                    var status = Rollout(state, player);
+                    Backpropagate(node, status);
+                }
 
             }
             //if (verbose)

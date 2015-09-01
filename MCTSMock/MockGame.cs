@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MCTS.Enum;
 using MCTS.Interfaces;
-
+using MCTS.Utils;
 namespace MCTSMock
 {
     public class MockGame : IGameState
@@ -33,11 +30,19 @@ namespace MCTSMock
 
         IEnumerable<IMove> IGameState.GetMoves()
         {
-             return new List<IMove>()
-                {
-                    new MockMove(this.winProbability),
-                    new MockMove(100 - this.winProbability)
-                };
+            List<IMove> list = new List<IMove>();
+            if (this.winProbability >=1 && this.winProbability < 99)
+            {
+                list.Add(new MockMove(this.winProbability + 1));
+                list.Add(new MockMove(100 - this.winProbability - 1));
+            }
+            else
+            {
+
+                list.Add(new MockMove(99));
+                list.Add(new MockMove(0));
+            }
+            return list.Shuffle();
         }
 
         EGameFinalStatus IGameState.PlayRandomlyUntilTheEnd(IPlayer player)

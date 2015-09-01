@@ -16,8 +16,8 @@
         {
             var game = new MockGame(winProbability);
             var move = MCTS.UCT.ComputeRootParallization(game, iter, false, null, 1);
-            System.Console.WriteLine(move.Name);
-            Assert.IsTrue(move.Name.Contains(winProbability.ToString()));
+            var moveProbability = int.Parse(move.Name);
+            Assert.That(moveProbability, Is.GreaterThan(winProbability));
         }
     }
 }

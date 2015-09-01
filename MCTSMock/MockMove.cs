@@ -15,13 +15,12 @@ namespace MCTSMock
             }
             else throw new ArgumentOutOfRangeException("winProbability", winProbability, "Invalid winProbability. It must be between 0 and 100 included");
         }
-
-        private const string name = "Move ";
+        
         string IMove.Name
         {
             get
             {
-                return name + this.winProbability;
+                return this.winProbability.ToString();
             }
         }
 
