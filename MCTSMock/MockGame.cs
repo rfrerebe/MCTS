@@ -23,6 +23,12 @@ namespace MCTSMock
                     "Invalid winProbability. It must be between 0 (included) and 100 (exluded)");
             }
         }
+
+        public EGameFinalStatus GetResult(IPlayer player)
+        {
+            throw new NotImplementedException();
+        }
+
         IPlayer IGameState.CurrentPlayer()
         {
             return new MockPlayer();

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MCTSTest.cs" />
+    <Compile Include="NimsMCTSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RootParallelizationTest.cs" />
     <Compile Include="SingleThreadedTest.cs" />
@@ -62,11 +63,16 @@
       <Project>{9aacf0aa-e46f-49d2-b195-2dcd73f6c4cf}</Project>
       <Name>MCTS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleGames\SimpleGames.fsproj">
+      <Project>{01c6793b-dc76-4a03-a8db-c0a790312605}</Project>
+      <Name>SimpleGames</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

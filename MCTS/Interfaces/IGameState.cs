@@ -9,6 +9,8 @@
 
         EGameFinalStatus PlayRandomlyUntilTheEnd(IPlayer player);
 
+        EGameFinalStatus GetResult(IPlayer player);
+
         IPlayer CurrentPlayer();
     }
 }

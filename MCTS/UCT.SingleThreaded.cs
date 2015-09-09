@@ -13,12 +13,6 @@ namespace MCTS
             var rootNode = new SingleThreadedNode(null, null, gameState, uctk);
             var player = gameState.CurrentPlayer();
 
-            //var taskCount = Math.Min(itermax, rootNode.MovesCount);
-            //var tasks = (Enumerable.Range(0, taskCount).Select (i => Task.Factory.StartNew(() => ComputeFirstNodes(rootNode, player)))).ToArray();
-            //Task.WaitAll(tasks);
-
-            //var remainingTasks = itermax - rootNode.MovesCount;
-
             for (var i = 0; i < itermax; i++)
             {
                 INode node = rootNode;
