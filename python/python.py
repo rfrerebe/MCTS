@@ -84,7 +84,7 @@ class NimState:
     def GetMoves(self):
         """ Get all possible moves from this state.
         """
-        return range(1,min([4, self.chips + 1]))
+        return list(range(1,min([4, self.chips + 1])))
     
     def GetResult(self, playerjm):
         """ Get the game result from the viewpoint of playerjm. 
@@ -355,8 +355,8 @@ def UCT(rootstate, itermax, verbose = False):
             node = node.parentNode
 
     # Output some information about the tree - can be omitted
-    if (verbose): print rootnode.TreeToString(0)
-    else: print rootnode.ChildrenToString()
+    if (verbose): print(rootnode.TreeToString(0))
+    else: print(rootnode.ChildrenToString())
 
     return sorted(rootnode.childNodes, key = lambda c: c.visits)[-1].move # return the move that was most visited
                 
@@ -368,18 +368,19 @@ def UCTPlayGame():
     # state = OXOState() # uncomment to play OXO
     state = NimState(5) # uncomment to play Nim with the given number of starting chips
     while (state.GetMoves() != []):
-        print str(state)
+        print(str(state))
         if state.playerJustMoved == 1:
             m = UCT(rootstate = state, itermax = 1000, verbose = False) # play with values for itermax and verbose = True
         else:
             m = UCT(rootstate = state, itermax = 100, verbose = False)
-        print "Best Move: " + str(m) + "\n"
+        print("Best Move: " + str(m) + "\n")
         state.DoMove(m)
     if state.GetResult(state.playerJustMoved) == 1.0:
-        print "Player " + str(state.playerJustMoved) + " wins!"
+        print("Player " + str(state.playerJustMoved) + " wins!")
     elif state.GetResult(state.playerJustMoved) == 0.0:
-        print "Player " + str(3 - state.playerJustMoved) + " wins!"
-    else: print "Nobody wins!"
+        print("Player " + str(3 - state.playerJustMoved) + " wins!")
+    else: print("Nobody wins!")
 
 if __name__ == "__main__":
     """ Play a single game to the end using UCT for both players."""
+    UCTPlayGame()
