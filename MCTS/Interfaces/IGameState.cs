@@ -7,10 +7,14 @@
     {
         IEnumerable<IMove> GetMoves();
 
-        EGameFinalStatus PlayRandomlyUntilTheEnd(IPlayer player);
+        void PlayRandomlyUntilTheEnd();
+
+        void DoMove(IMove move);
 
         EGameFinalStatus GetResult(IPlayer player);
 
         IPlayer CurrentPlayer();
+
+        IGameState Clone();
     }
 }

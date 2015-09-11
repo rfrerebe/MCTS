@@ -26,7 +26,7 @@ namespace MCTS
                     //    printfn(node.DisplayUTC());
                     //}
                     node = node.UCTSelectChild();
-                    state = node.Move.DoMove();
+                    state.DoMove(node.Move);
                 }
 
                 // Expand
@@ -34,13 +34,13 @@ namespace MCTS
                 if (result.Item1)
                 {
                     var move = result.Item2;
-                    state = move.DoMove();
+                    state.DoMove(move);
                     Func<float, INode> constructor = (f) => new SingleThreadedNode(node, move, state, f);
                     node = node.AddChild(constructor);
                 }
 
                 // Rollout
-                var status = state.PlayRandomlyUntilTheEnd(player);
+                var status = state.PlayRandomlyUntilTheEnd().GetResult(player);
 
                 // Backpropagate
                 while (node != null)

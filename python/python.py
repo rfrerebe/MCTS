@@ -1,4 +1,4 @@
-# This is a very simple implementation of the UCT Monte Carlo Tree Search algorithm in Python 2.7.
+﻿# This is a very simple implementation of the UCT Monte Carlo Tree Search algorithm in Python 2.7.
 # The function UCT(rootstate, itermax, verbose = False) is towards the bottom of the code.
 # It aims to have the clearest and simplest possible code, and for the sake of clarity, the code
 # is orders of magnitude less efficient than it could be made, particularly by using a 
@@ -372,7 +372,7 @@ def UCTPlayGame():
         if state.playerJustMoved == 1:
             m = UCT(rootstate = state, itermax = 1000, verbose = False) # play with values for itermax and verbose = True
         else:
-            m = UCT(rootstate = state, itermax = 100, verbose = False)
+            m = UCT(rootstate = state, itermax = 1000, verbose = False)
         print("Best Move: " + str(m) + "\n")
         state.DoMove(m)
     if state.GetResult(state.playerJustMoved) == 1.0:
