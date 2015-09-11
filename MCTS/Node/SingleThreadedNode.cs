@@ -20,7 +20,7 @@ namespace MCTS.Node
         private long visits;
 
         internal SingleThreadedNode(INode parent, IMove move, IGameState gameState, float uctk)
-            : base(parent, move, uctk)
+            : base(parent, move, uctk, gameState.PlayerJustMoved())
         {
             this.wins = 0L;
             this.visits = 0L;

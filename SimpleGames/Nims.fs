@@ -15,12 +15,10 @@ module Nims =
                 | Player1 -> "Player1"
                 | Player2 -> "Player2"
     
-    type Move (chips, next) =
+    type Move (chips) =
         interface IMove with
             member this.Name = chips.ToString()
 
-            member this.DoMove() =
-                Nims(chips, next) :> IGameState
                 
 
     and Nims( tokenNumber : int, currentPlayer : IPlayer) =
@@ -68,11 +66,11 @@ module Nims =
                 | _ -> 
                     invalidOp "Can't give result, game is not finished"
                 
-            member this.PlayRandomlyUntilTheEnd player  =
+            member this.PlayRandomlyUntilTheEnd  =
                 let rec play token p =
                     match token with
                     | x when x = 0 ->
-                        getResult p player
+                        ()
                     | _ -> 
                         let min = min 4 (token + 1)
                         let n = random.Next(1, min)

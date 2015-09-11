@@ -12,12 +12,15 @@ namespace MCTS.Node
         private readonly INode parent;
         private readonly IMove move;
         private readonly float uctk;
+        private readonly IPlayer playerJustMoved;
 
-        internal NodeBase (INode parentNode, IMove move, float uctk)
+
+        internal NodeBase (INode parentNode, IMove move, float uctk, IPlayer player)
         {
             this.parent = parentNode;
             this.move = move;
             this.uctk = uctk;
+            this.playerJustMoved = player;
         }
 
 
@@ -28,6 +31,8 @@ namespace MCTS.Node
         {
             return (node.Wins / node.Visits) + (this.UCTK * Math.Sqrt(2 * Math.Log(this.Visits) / node.Visits));
         }
+
+
 
         public abstract bool NodeIsFullyExpandedAndNonterminal
         {
@@ -78,6 +83,13 @@ namespace MCTS.Node
             }
         }
 
+        public IPlayer PlayerJustMoved
+        {
+            get
+            {
+                return this.playerJustMoved;
+            }
+        }
         //string DisplayMostVisistedChild()
         //{
         //    throw new NotImplementedException();

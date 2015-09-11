@@ -11,12 +11,11 @@ namespace MCTS
         public static IMove ComputeSingleThreadedUCT(IGameState gameState, int itermax, bool verbose, Action<string> printfn, float uctk)
         {
             var rootNode = new SingleThreadedNode(null, null, gameState, uctk);
-            var player = gameState.CurrentPlayer();
 
             for (var i = 0; i < itermax; i++)
             {
                 INode node = rootNode;
-                var state = gameState;
+                var state = gameState.Clone();
 
                 // Select
                 while (node.NodeIsFullyExpandedAndNonterminal)
@@ -40,7 +39,8 @@ namespace MCTS
                 }
 
                 // Rollout
-                var status = state.PlayRandomlyUntilTheEnd().GetResult(player);
+                state.PlayRandomlyUntilTheEnd();
+                var status = state.GetResult(player);
 
                 // Backpropagate
                 while (node != null)

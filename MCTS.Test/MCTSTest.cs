@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using MCTS.Utils;
-using MCTSMock;
 namespace MCTSTest
 {
     public class MCTSTest
