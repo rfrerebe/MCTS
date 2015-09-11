@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTSMock", "MCTSMock\MCTSMo
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SimpleGames", "SimpleGames\SimpleGames.fsproj", "{01C6793B-DC76-4A03-A8DB-C0A790312605}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "python", "python\python.pyproj", "{268F1D26-2ECE-4888-9F87-DE7C26022AE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,8 @@ Global
 		{01C6793B-DC76-4A03-A8DB-C0A790312605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01C6793B-DC76-4A03-A8DB-C0A790312605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01C6793B-DC76-4A03-A8DB-C0A790312605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268F1D26-2ECE-4888-9F87-DE7C26022AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268F1D26-2ECE-4888-9F87-DE7C26022AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
