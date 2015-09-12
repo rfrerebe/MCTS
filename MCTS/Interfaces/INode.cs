@@ -31,6 +31,8 @@
 
         INode UCTSelectChild();
 
+        IPlayer PlayerJustMoved { get; }
+
         void Update(EGameFinalStatus status);
 
         string DisplayTree(int indent);

@@ -90,10 +90,17 @@ namespace MCTS.Node
                 return this.playerJustMoved;
             }
         }
-        //string DisplayMostVisistedChild()
-        //{
-        //    throw new NotImplementedException();
-        //}
+
+        public string DisplayMostVisistedChild()
+        {
+            var sb = new StringBuilder();
+            foreach (var node in this.Childs)
+            {
+                sb.AppendFormat("N:{0} W/V:{1}/{2}", node.Move.Name, node.Wins, node.Visits);
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
 
         //internal string DisplayTree()
         //{
@@ -111,7 +118,23 @@ namespace MCTS.Node
 
         public  IMove MostVisitedMove()
         {
-            return this.Childs.OrderByDescending(node => node.Visits).First().Move;
+            var firstVisitOrdered = this.Childs.OrderByDescending(node => node.Visits).First();
+
+            // most visited move is a really above other moves.
+            // done to avoid :
+            //      Node 1 : Visit = 334, Win = 2 (selected)
+            //      Node 2 : Visit = 333, Win = 330 (most promising)
+            //      Node 3 : Visit = 333, Win = 5
+            // return first 
+            if (firstVisitOrdered.Visits > (this.Visits / this.Childs.Count()) + 1)
+            {
+                return firstVisitOrdered.Move;
+            }
+            // otherwise return most wins    
+            else
+            {
+                return this.Childs.OrderByDescending(node => node.Wins).First().Move;
+            }
         }
         public INode UCTSelectChild()
         {

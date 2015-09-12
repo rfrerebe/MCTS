@@ -40,19 +40,18 @@ namespace MCTS
 
                 // Rollout
                 state.PlayRandomlyUntilTheEnd();
-                var status = state.GetResult(player);
 
                 // Backpropagate
                 while (node != null)
                 {
-                    node.Update(status);
+                    node.Update(state.GetResult(node.PlayerJustMoved));
                     node = node.Parent;
                 }
             }
             if (verbose)
             {
-                printfn(rootNode.DisplayTree(0));
-                //printfn(rootNode.DisplayMostVisistedChild());
+                //printfn(rootNode.DisplayTree(0));
+                printfn(rootNode.DisplayMostVisistedChild());
             }
 
             return rootNode.MostVisitedMove();

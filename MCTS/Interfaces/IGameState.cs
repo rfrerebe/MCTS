@@ -13,7 +13,7 @@
 
         EGameFinalStatus GetResult(IPlayer player);
 
-        IPlayer PlayerJustMoved();
+        IPlayer PlayerJustMoved { get; }
 
         IGameState Clone();
     }

@@ -48,6 +48,14 @@ namespace MCTSTest
 
         private int chips;
 
+        IPlayer IGameState.PlayerJustMoved
+        {
+            get
+            {
+                return new NimPlayer(this.playerJustMoved);
+            }
+        }
+
         public NimState(int chips)
         {
             this.playerJustMoved = 2;
@@ -72,8 +80,12 @@ namespace MCTSTest
 
         public void PlayRandomlyUntilTheEnd()
         {
-            var r = new System.Random();
-            while()
+            var r = new Random();
+            while(this.chips != 0)
+            {
+                this.chips = this.chips - r.Next(1, Math.Min(3, this.chips) + 1);
+                this.playerJustMoved = 3 - this.playerJustMoved;
+            }
         }
 
         public void DoMove(IMove move)
@@ -117,12 +129,9 @@ namespace MCTSTest
             return string.Format("Chips:{0} JustPlayer:{1}", this.chips, this.playerJustMoved);
         }
 
-        public IPlayer PlayerJustMoved
+        public IPlayer PlayerJustMoved()
         {
-            get
-            {
-                return new NimPlayer(this.playerJustMoved);
-            }
+            return new NimPlayer(this.playerJustMoved);
         }
 
     }
