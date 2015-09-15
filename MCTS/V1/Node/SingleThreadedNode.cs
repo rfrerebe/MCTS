@@ -1,9 +1,6 @@
-﻿
-namespace MCTS.Node
+﻿namespace MCTS.V1.Node
 {
     using System;
-    using System.Linq;
-    using System.Text;
 
     using Enum;
     using Interfaces;
@@ -80,9 +77,9 @@ namespace MCTS.Node
             return new Tuple<bool, IMove>(false, null); ;
         }
 
-        public override INode AddChild (Func<float, INode> nodeConstructor)
+        public override INode AddChild (Func<INode> nodeConstructor)
         {
-            var node = nodeConstructor(this.UCTK);
+            var node = nodeConstructor();
             this.childs.Add(node);
             return node;
         }

@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MCTSTest.cs" />
-    <Compile Include="Nims.cs" />
-    <Compile Include="NimsMCTSTest.cs" />
+    <Compile Include="V1\Nims.cs" />
+    <Compile Include="V2\Nims.cs" />
+    <Compile Include="V2\NimsMCTSTestV2.cs" />
+    <Compile Include="V1\NimsMCTSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

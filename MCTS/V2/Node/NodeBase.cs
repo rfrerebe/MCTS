@@ -1,12 +1,12 @@
-﻿using MCTS.Interfaces;
-using MCTS.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MCTS.Node
+﻿namespace MCTS.V2.Node
 {
+    using Interfaces;
+    using Enum;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     internal abstract class NodeBase : INode
     {
         private readonly INode parent;
@@ -112,7 +112,7 @@ namespace MCTS.Node
         //    throw new NotImplementedException();
         //}
 
-        public abstract INode AddChild(Func<float, INode> nodeConstructor);
+        public abstract INode AddChild(Func<INode> nodeConstructor);
 
         public abstract Tuple<bool, IMove> GetRandomMoveOrIsFalse();
 

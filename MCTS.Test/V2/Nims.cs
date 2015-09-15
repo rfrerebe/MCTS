@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MCTS.Enum;
-using MCTS.Interfaces;
+using MCTS.V2.Interfaces;
 using System.Linq;
 
 namespace MCTSTest
@@ -26,19 +26,34 @@ namespace MCTSTest
 
     public class NimsMove : IMove
     {
-        private int move;
+        private int remaining;
+        private int player;
 
-        public NimsMove(int move)
+        public NimsMove(int remaining, int player)
         {
-            this.move = move;
+            if (0 > remaining)
+            {
+                throw new ArgumentException("Remaining can not be smaller than 0", "remaining");
+            }
+            if (player !=1 || player != 2)
+            {
+                throw new ArgumentException("Player can only be 1 or 2", "player");
+            }
+            this.remaining = remaining;
+            this.player = player;
         }
 
         public string Name
         {
             get
             {
-                return this.move.ToString();
+                return this.remaining.ToString();
             }
+        }
+
+        public IGameState DoMove()
+        {
+            return new NimState(this.remaining, this.player);               
         }
     }
 
@@ -56,29 +71,33 @@ namespace MCTSTest
             }
         }
 
+        /// <summary>
+        ///  Used to start game
+        /// </summary>
+        /// <param name="chips"></param>
         public NimState(int chips)
         {
             this.playerJustMoved = 2;
             this.chips = chips;
         }
 
-        private NimState(int chips, int playerJustMoved)
+        /// <summary>
+        /// Used internally by Move class
+        /// </summary>
+        /// <param name="chips"></param>
+        /// <param name="playerJustMoved"></param>
+        internal NimState(int chips, int playerJustMoved)
         {
             this.playerJustMoved = playerJustMoved;
             this.chips = chips;
         }
 
-        public IGameState Clone()
-        {
-            return new NimState(this.chips, this.playerJustMoved);
-        }
-
         public IEnumerable<IMove> GetMoves()
         {
-            return Enumerable.Range(1, Math.Min(3, this.chips)).Select(m => new NimsMove(m));
+            return Enumerable.Range(1, Math.Min(3, this.chips)).Select(m => new NimsMove(this.chips - m, 3 - this.playerJustMoved));
         }
 
-        public void PlayRandomlyUntilTheEnd()
+        public IGameState PlayRandomlyUntilTheEnd()
         {
             var r = new Random();
             while(this.chips != 0)
@@ -86,21 +105,7 @@ namespace MCTSTest
                 this.chips = this.chips - r.Next(1, Math.Min(3, this.chips) + 1);
                 this.playerJustMoved = 3 - this.playerJustMoved;
             }
-        }
-
-        public void DoMove(IMove move)
-        {
-            int m;
-            if(int.TryParse(move.Name, out m))
-            {
-                if (m >= 1 && m <= 3)
-                {
-                    this.chips -= m;
-                    this.playerJustMoved = 3 - this.playerJustMoved;
-                    return;
-                }
-            }
-            throw new InvalidOperationException(string.Format("Can't apply move {0}", move.Name));
+            return this;
         }
 
         public EGameFinalStatus GetResult(IPlayer player)
@@ -126,7 +131,7 @@ namespace MCTSTest
 
         public override string ToString()
         {
-            return string.Format("Chips:{0} JustPlayer:{1}", this.chips, this.playerJustMoved);
+            return string.Format("Chips:{0} PlayerJustMoved:{1}", this.chips, this.playerJustMoved);
         }
 
         public IPlayer PlayerJustMoved()

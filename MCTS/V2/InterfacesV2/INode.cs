@@ -1,4 +1,4 @@
-﻿namespace MCTS.Interfaces
+﻿namespace MCTS.V2.Interfaces
 {
     using System;
     using System.Collections.Generic;
@@ -23,7 +23,7 @@
 
         bool NodeIsFullyExpandedAndNonterminal { get; }
 
-        INode AddChild(Func<float, INode> nodeConstructor);
+        INode AddChild(Func<INode> nodeConstructor);
 
         Tuple<bool, IMove> GetRandomMoveOrIsFalse();
 

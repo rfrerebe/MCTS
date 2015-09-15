@@ -39,18 +39,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\INode.cs" />
-    <Compile Include="Node\MultiThreadedNode.cs" />
+    <Compile Include="V1\Interfaces\INode.cs" />
+    <Compile Include="V2\InterfacesV2\IGameState.cs" />
+    <Compile Include="V2\InterfacesV2\IMove.cs" />
+    <Compile Include="V2\InterfacesV2\INode.cs" />
+    <Compile Include="V2\InterfacesV2\IPlayer.cs" />
     <Compile Include="Enum\EGameFinalStatus.cs" />
-    <Compile Include="Interfaces\IGameState.cs" />
-    <Compile Include="Interfaces\IMove.cs" />
-    <Compile Include="Interfaces\IPlayer.cs" />
-    <Compile Include="Node\NodeBase.cs" />
-    <Compile Include="Node\SingleThreadedNode.cs" />
+    <Compile Include="V1\Interfaces\IGameState.cs" />
+    <Compile Include="V1\Interfaces\IMove.cs" />
+    <Compile Include="V1\Interfaces\IPlayer.cs" />
+    <Compile Include="V1\Node\NodeBase.cs" />
+    <Compile Include="V1\Node\SingleThreadedNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCT.RootParrelization.cs" />
-    <Compile Include="UCT.SingleThreaded.cs" />
+    <Compile Include="V1\UCT\SingleThreaded.cs" />
     <Compile Include="Utils\Shuffle.cs" />
+    <Compile Include="V2\Node\MultiThreadedNode.cs" />
+    <Compile Include="V2\Node\NodeBase.cs" />
+    <Compile Include="V2\Node\SingleThreadedNode.cs" />
+    <Compile Include="V2\UCT\RootParrelization.cs" />
+    <Compile Include="V2\UCT\SingleThreaded.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
